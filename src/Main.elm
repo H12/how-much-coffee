@@ -15,6 +15,7 @@ import Element
         , Element
         , centerX
         , centerY
+        , column
         , el
         , fill
         , height
@@ -60,16 +61,20 @@ toString brew =
 
 type alias Model =
     { selectedBrew : Maybe Brew
+    , cupsCoffee : Int
     }
 
 
 init : Model
 init =
-    { selectedBrew = Nothing }
+    { selectedBrew = Nothing
+    , cupsCoffee = 0
+    }
 
 
 type Msg
     = Select Brew
+    | Set Int
 
 
 update : Msg -> Model -> Model
@@ -78,11 +83,38 @@ update msg model =
         Select newBrew ->
             { model | selectedBrew = Just newBrew }
 
+        Set numCups ->
+            { model | cupsCoffee = numCups }
+
+
+cupsWater : Maybe Brew -> Int -> Int
+cupsWater brewType cupsCoffee =
+    case brewType of
+        Just Cold ->
+            cupsCoffee * 450
+
+        Just Drip ->
+            cupsCoffee * 350
+
+        Just Press ->
+            cupsCoffee * 250
+
+        Nothing ->
+            0
+
 
 view : Model -> Html Msg
 view model =
-    Element.layout []
-        (brewSelect model.selectedBrew)
+    Element.layout [] (pageLayout model)
+
+
+pageLayout : Model -> Element Msg
+pageLayout model =
+    column [ centerX, spacing 30 ]
+        [ brewSelect model.selectedBrew
+        , cupSelect model.cupsCoffee
+        , el [ centerX ] (text (String.fromInt (cupsWater model.selectedBrew model.cupsCoffee)))
+        ]
 
 
 brewSelect : Maybe Brew -> Element Msg
@@ -94,12 +126,30 @@ brewSelect selectedBrew =
         ]
 
 
+cupSelect : Int -> Element Msg
+cupSelect numCups =
+    row [ width fill, spacing 30 ]
+        [ cupButton (numCups == 1) 1
+        , cupButton (numCups == 2) 2
+        , cupButton (numCups == 4) 4
+        ]
+
+
 brewButton : Bool -> Brew -> Element Msg
 brewButton selected brew =
     Input.button
         (statusAttrs selected)
         { onPress = Just (Select brew)
         , label = el trueCenter (text (toString (Just brew)))
+        }
+
+
+cupButton : Bool -> Int -> Element Msg
+cupButton selected numCups =
+    Input.button
+        (statusAttrs selected)
+        { onPress = Just (Set numCups)
+        , label = el trueCenter (text (String.fromInt numCups))
         }
 
 
@@ -134,5 +184,6 @@ ternary : Bool -> a -> a -> a
 ternary isTrue opt1 opt2 =
     if isTrue then
         opt1
+
     else
         opt2
