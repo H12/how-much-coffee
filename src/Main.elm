@@ -59,6 +59,10 @@ toString brew =
             ""
 
 
+
+-- MODEL
+
+
 type alias Model =
     { selectedBrew : Maybe Brew
     , cupsCoffee : Int
@@ -70,6 +74,10 @@ init =
     { selectedBrew = Nothing
     , cupsCoffee = 0
     }
+
+
+
+-- UPDATE
 
 
 type Msg
@@ -103,9 +111,13 @@ cupsWater brewType cupsCoffee =
             0
 
 
+
+-- VIEW
+
+
 view : Model -> Html Msg
 view model =
-    Element.layout [] (pageLayout model)
+    Element.layout [ Background.color creme ] (pageLayout model)
 
 
 pageLayout : Model -> Element Msg
@@ -138,7 +150,7 @@ cupSelect numCups =
 brewButton : Bool -> Brew -> Element Msg
 brewButton selected brew =
     Input.button
-        (statusAttrs selected)
+        (statusAttrs selected brown)
         { onPress = Just (Select brew)
         , label = el trueCenter (text (toString (Just brew)))
         }
@@ -147,7 +159,7 @@ brewButton selected brew =
 cupButton : Bool -> Int -> Element Msg
 cupButton selected numCups =
     Input.button
-        (statusAttrs selected)
+        (statusAttrs selected blue)
         { onPress = Just (Set numCups)
         , label = el trueCenter (text (String.fromInt numCups))
         }
@@ -158,16 +170,21 @@ trueCenter =
     [ centerX, centerY ]
 
 
-statusAttrs : Bool -> List (Attribute Msg)
-statusAttrs isActive =
-    [ Background.color (ternary isActive brown creme)
-    , Font.color (ternary isActive creme brown)
-    , Border.color brown
+statusAttrs : Bool -> Color -> List (Attribute Msg)
+statusAttrs isActive color =
+    [ Background.color (ternary isActive color white)
+    , Font.color (ternary isActive white color)
+    , Border.color color
     , Border.width 2
     , Border.rounded 5
     , height (px 42)
     , width (px 68)
     ]
+
+
+blue : Color
+blue =
+    rgb255 125 132 178
 
 
 brown : Color
@@ -177,7 +194,16 @@ brown =
 
 creme : Color
 creme =
+    rgb255 231 222 205
+
+
+white : Color
+white =
     rgb255 251 250 248
+
+
+
+-- UTILS
 
 
 ternary : Bool -> a -> a -> a
