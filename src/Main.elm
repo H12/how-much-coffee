@@ -81,17 +81,17 @@ init =
 
 
 type Msg
-    = Select Brew
-    | Set Int
+    = SelectBrew Brew
+    | SelectNumCups Int
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Select newBrew ->
+        SelectBrew newBrew ->
             { model | selectedBrew = Just newBrew }
 
-        Set numCups ->
+        SelectNumCups numCups ->
             { model | cupsCoffee = numCups }
 
 
@@ -151,7 +151,7 @@ brewButton : Bool -> Brew -> Element Msg
 brewButton selected brew =
     Input.button
         (statusAttrs selected brown)
-        { onPress = Just (Select brew)
+        { onPress = Just (SelectBrew brew)
         , label = el trueCenter (text (toString (Just brew)))
         }
 
@@ -160,7 +160,7 @@ cupButton : Bool -> Int -> Element Msg
 cupButton selected numCups =
     Input.button
         (statusAttrs selected blue)
-        { onPress = Just (Set numCups)
+        { onPress = Just (SelectNumCups numCups)
         , label = el trueCenter (text (String.fromInt numCups))
         }
 
