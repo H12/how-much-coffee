@@ -99,20 +99,30 @@ update msg model =
             { model | yield = numCups }
 
 
-cupsWater : Maybe Brew -> Int -> Int
-cupsWater brewType yield =
+amount : Maybe Brew -> Int -> ( Int, Int )
+amount brewType yield =
     case brewType of
         Just Drip ->
-            yield * 450
+            ( yield * 15, yield * 250 )
 
         Just Pour ->
-            yield * 350
+            ( yield * 17, yield * 275 )
 
         Just Press ->
-            yield * 250
+            ( yield * 17, yield * 257 )
 
         Nothing ->
-            0
+            ( 0, 0 )
+
+
+gramsCoffee : ( Int, Int ) -> String
+gramsCoffee amounts =
+    String.fromInt (Tuple.first amounts) ++ " grams of coffee"
+
+
+gramsWater : ( Int, Int ) -> String
+gramsWater amounts =
+    String.fromInt (Tuple.second amounts) ++ " grams of water"
 
 
 
@@ -129,7 +139,8 @@ pageLayout model =
     column [ centerX, spacing 30 ]
         [ brewSelect model.selectedBrew
         , cupSelect model.yield
-        , el [ centerX ] (text (String.fromInt (cupsWater model.selectedBrew model.yield)))
+        , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
+        , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.yield)))
         ]
 
 
