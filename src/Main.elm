@@ -37,20 +37,24 @@ main =
     Browser.sandbox { init = init, update = update, view = view }
 
 
+
+-- BREW
+
+
 type Brew
-    = Cold
-    | Drip
+    = Drip
+    | Pour
     | Press
 
 
 toString : Maybe Brew -> String
 toString brew =
     case brew of
-        Just Cold ->
-            "Cold"
-
         Just Drip ->
             "Drip"
+
+        Just Pour ->
+            "Pour"
 
         Just Press ->
             "Press"
@@ -65,14 +69,14 @@ toString brew =
 
 type alias Model =
     { selectedBrew : Maybe Brew
-    , cupsCoffee : Int
+    , yield : Int
     }
 
 
 init : Model
 init =
     { selectedBrew = Nothing
-    , cupsCoffee = 0
+    , yield = 0
     }
 
 
@@ -82,7 +86,7 @@ init =
 
 type Msg
     = SelectBrew Brew
-    | SelectNumCups Int
+    | SelectYield Int
 
 
 update : Msg -> Model -> Model
@@ -91,21 +95,21 @@ update msg model =
         SelectBrew newBrew ->
             { model | selectedBrew = Just newBrew }
 
-        SelectNumCups numCups ->
-            { model | cupsCoffee = numCups }
+        SelectYield numCups ->
+            { model | yield = numCups }
 
 
 cupsWater : Maybe Brew -> Int -> Int
-cupsWater brewType cupsCoffee =
+cupsWater brewType yield =
     case brewType of
-        Just Cold ->
-            cupsCoffee * 450
-
         Just Drip ->
-            cupsCoffee * 350
+            yield * 450
+
+        Just Pour ->
+            yield * 350
 
         Just Press ->
-            cupsCoffee * 250
+            yield * 250
 
         Nothing ->
             0
@@ -124,16 +128,16 @@ pageLayout : Model -> Element Msg
 pageLayout model =
     column [ centerX, spacing 30 ]
         [ brewSelect model.selectedBrew
-        , cupSelect model.cupsCoffee
-        , el [ centerX ] (text (String.fromInt (cupsWater model.selectedBrew model.cupsCoffee)))
+        , cupSelect model.yield
+        , el [ centerX ] (text (String.fromInt (cupsWater model.selectedBrew model.yield)))
         ]
 
 
 brewSelect : Maybe Brew -> Element Msg
 brewSelect selectedBrew =
     row [ width fill, spacing 30 ]
-        [ brewButton (selectedBrew == Just Cold) Cold
-        , brewButton (selectedBrew == Just Drip) Drip
+        [ brewButton (selectedBrew == Just Drip) Drip
+        , brewButton (selectedBrew == Just Pour) Pour
         , brewButton (selectedBrew == Just Press) Press
         ]
 
@@ -160,7 +164,7 @@ cupButton : Bool -> Int -> Element Msg
 cupButton selected numCups =
     Input.button
         (statusAttrs selected blue)
-        { onPress = Just (SelectNumCups numCups)
+        { onPress = Just (SelectYield numCups)
         , label = el trueCenter (text (String.fromInt numCups))
         }
 
