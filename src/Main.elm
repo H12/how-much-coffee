@@ -19,6 +19,7 @@ import Element
         , el
         , fill
         , height
+        , padding
         , px
         , rgb255
         , row
@@ -141,7 +142,7 @@ view model =
 
 pageLayout : Model -> Element Msg
 pageLayout model =
-    column [ centerX, spacing 30 ]
+    column [ centerX, padding 10, spacing 30 ]
         [ brewSelect model.selectedBrew
         , cupSlider model.yield
         , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
