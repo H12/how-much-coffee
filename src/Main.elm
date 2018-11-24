@@ -64,19 +64,27 @@ toString brew =
 
 
 
+-- UNITS
+
+
+type Units
+    = Grams
+
+
+
 -- MODEL
 
 
 type alias Model =
-    { selectedBrew : Maybe Brew
-    , yield : Int
+    { selectedBrew : Brew
+    , yield : Float
     }
 
 
 init : Model
 init =
-    { selectedBrew = Nothing
-    , yield = 0
+    { selectedBrew = Drip
+    , yield = 0.0
     }
 
 
@@ -86,43 +94,40 @@ init =
 
 type Msg
     = SelectBrew Brew
-    | SelectYield Int
+    | SelectYield Float
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         SelectBrew newBrew ->
-            { model | selectedBrew = Just newBrew }
+            { model | selectedBrew = newBrew }
 
-        SelectYield numCups ->
-            { model | yield = numCups }
+        SelectYield yield ->
+            { model | yield = yield }
 
 
-amount : Maybe Brew -> Int -> ( Int, Int )
+amount : Brew -> Float -> ( Float, Float )
 amount brewType yield =
     case brewType of
-        Just Drip ->
-            ( yield * 15, yield * 250 )
+        Drip ->
+            ( yield * 1.875, yield * 31.25 )
 
-        Just Pour ->
-            ( yield * 17, yield * 275 )
+        Pour ->
+            ( yield * 2.059, yield * 34.483 )
 
-        Just Press ->
-            ( yield * 17, yield * 257 )
-
-        Nothing ->
-            ( 0, 0 )
+        Press ->
+            ( yield * 2.143, yield * 32.143 )
 
 
-gramsCoffee : ( Int, Int ) -> String
+gramsCoffee : ( Float, Float ) -> String
 gramsCoffee amounts =
-    String.fromInt (Tuple.first amounts) ++ " grams of coffee"
+    String.fromInt (round <| Tuple.first amounts) ++ " grams of coffee"
 
 
-gramsWater : ( Int, Int ) -> String
+gramsWater : ( Float, Float ) -> String
 gramsWater amounts =
-    String.fromInt (Tuple.second amounts) ++ " grams of water"
+    String.fromInt (round <| Tuple.second amounts) ++ " grams of water"
 
 
 
@@ -138,28 +143,45 @@ pageLayout : Model -> Element Msg
 pageLayout model =
     column [ centerX, spacing 30 ]
         [ brewSelect model.selectedBrew
-        , cupSelect model.yield
+        , cupSlider model.yield
         , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
         , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.yield)))
         ]
 
 
-brewSelect : Maybe Brew -> Element Msg
+brewSelect : Brew -> Element Msg
 brewSelect selectedBrew =
     row [ width fill, spacing 30 ]
-        [ brewButton (selectedBrew == Just Drip) Drip
-        , brewButton (selectedBrew == Just Pour) Pour
-        , brewButton (selectedBrew == Just Press) Press
+        [ brewButton (selectedBrew == Drip) Drip
+        , brewButton (selectedBrew == Pour) Pour
+        , brewButton (selectedBrew == Press) Press
         ]
 
 
-cupSelect : Int -> Element Msg
-cupSelect numCups =
-    row [ width fill, spacing 30 ]
-        [ cupButton (numCups == 1) 1
-        , cupButton (numCups == 2) 2
-        , cupButton (numCups == 4) 4
+cupSlider : Float -> Element Msg
+cupSlider yield =
+    Input.slider
+        [ Element.height (Element.px 30)
+        , Element.behindContent
+            (Element.el
+                [ width fill
+                , height (Element.px 2)
+                , centerY
+                , Background.color brown
+                , Border.rounded 3
+                ]
+                Element.none
+            )
         ]
+        { onChange = SelectYield
+        , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
+        , min = 0
+        , max = 64
+        , step = Just 1
+        , value = yield
+        , thumb =
+            Input.defaultThumb
+        }
 
 
 brewButton : Bool -> Brew -> Element Msg
@@ -171,12 +193,12 @@ brewButton selected brew =
         }
 
 
-cupButton : Bool -> Int -> Element Msg
-cupButton selected numCups =
+cupButton : Bool -> Float -> Element Msg
+cupButton selected yield =
     Input.button
         (statusAttrs selected blue)
-        { onPress = Just (SelectYield numCups)
-        , label = el trueCenter (text (String.fromInt numCups))
+        { onPress = Just (SelectYield yield)
+        , label = el trueCenter (text (String.fromFloat yield))
         }
 
 
