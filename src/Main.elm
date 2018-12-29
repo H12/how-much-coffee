@@ -8,25 +8,7 @@ module Main exposing
     )
 
 import Browser
-import Element
-    exposing
-        ( Attribute
-        , Color
-        , Element
-        , centerX
-        , centerY
-        , column
-        , el
-        , fill
-        , height
-        , padding
-        , px
-        , rgb255
-        , row
-        , spacing
-        , text
-        , width
-        )
+import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
