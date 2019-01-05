@@ -126,7 +126,7 @@ pageLayout : Model -> Element Msg
 pageLayout model =
     column [ centerX, padding 10, spacing 30 ]
         [ brewSelect model.selectedBrew
-        , cupSlider model.yield
+        , yieldSlider model.yield
         , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
         , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.yield)))
         ]
@@ -141,8 +141,8 @@ brewSelect selectedBrew =
         ]
 
 
-cupSlider : Float -> Element Msg
-cupSlider yield =
+yieldSlider : Float -> Element Msg
+yieldSlider yield =
     Input.slider
         [ Element.height (Element.px 30)
         , Element.behindContent
