@@ -176,8 +176,8 @@ brewButton selected brew =
         }
 
 
-cupButton : Bool -> Float -> Element Msg
-cupButton selected yield =
+yieldButton : Bool -> Float -> Element Msg
+yieldButton selected yield =
     Input.button
         (statusAttrs selected blue)
         { onPress = Just (SelectYield yield)
