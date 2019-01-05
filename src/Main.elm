@@ -60,6 +60,7 @@ type Units
 
 type alias Model =
     { selectedBrew : Brew
+    , strength : Float
     , yield : Float
     }
 
@@ -67,7 +68,8 @@ type alias Model =
 init : Model
 init =
     { selectedBrew = Drip
-    , yield = 0.0
+    , strength = 1.5
+    , yield = 36.0
     }
 
 
@@ -78,6 +80,7 @@ init =
 type Msg
     = SelectBrew Brew
     | SelectYield Float
+    | SelectStrength Float
 
 
 update : Msg -> Model -> Model
@@ -88,6 +91,9 @@ update msg model =
 
         SelectYield yield ->
             { model | yield = yield }
+
+        SelectStrength strength ->
+            { model | strength = strength }
 
 
 amount : Brew -> Float -> ( Float, Float )
@@ -126,6 +132,7 @@ pageLayout : Model -> Element Msg
 pageLayout model =
     column [ centerX, padding 10, spacing 30 ]
         [ brewSelect model.selectedBrew
+        , strengthSlider model.strength
         , yieldSlider model.yield
         , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
         , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.yield)))
@@ -139,6 +146,32 @@ brewSelect selectedBrew =
         , brewButton (selectedBrew == Pour) Pour
         , brewButton (selectedBrew == Press) Press
         ]
+
+
+strengthSlider : Float -> Element Msg
+strengthSlider strength =
+    Input.slider
+        [ Element.height (Element.px 30)
+        , Element.behindContent
+            (Element.el
+                [ width fill
+                , height (Element.px 2)
+                , centerY
+                , Background.color brown
+                , Border.rounded 3
+                ]
+                Element.none
+            )
+        ]
+        { onChange = SelectStrength
+        , label = Input.labelAbove [] (text ("Strength: " ++ String.fromFloat strength))
+        , min = 1
+        , max = 2
+        , step = Just 0.25
+        , value = strength
+        , thumb =
+            Input.defaultThumb
+        }
 
 
 yieldSlider : Float -> Element Msg
@@ -158,7 +191,7 @@ yieldSlider yield =
         ]
         { onChange = SelectYield
         , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
-        , min = 0
+        , min = 8
         , max = 64
         , step = Just 1
         , value = yield
