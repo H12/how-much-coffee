@@ -68,7 +68,7 @@ type alias Model =
 init : Model
 init =
     { selectedBrew = Drip
-    , strength = 1.5
+    , strength = 1.0
     , yield = 36.0
     }
 
@@ -96,17 +96,17 @@ update msg model =
             { model | strength = strength }
 
 
-amount : Brew -> Float -> ( Float, Float )
-amount brewType yield =
+amount : Brew -> Float -> Float -> ( Float, Float )
+amount brewType strength yield =
     case brewType of
         Drip ->
-            ( yield * 1.875, yield * 31.25 )
+            ( strength * yield * 1.875, yield * 31.25 )
 
         Pour ->
-            ( yield * 2.059, yield * 34.483 )
+            ( strength * yield * 2.059, yield * 34.483 )
 
         Press ->
-            ( yield * 2.143, yield * 32.143 )
+            ( strength * yield * 2.143, yield * 32.143 )
 
 
 gramsCoffee : ( Float, Float ) -> String
@@ -134,8 +134,8 @@ pageLayout model =
         [ brewSelect model.selectedBrew
         , strengthSlider model.strength
         , yieldSlider model.yield
-        , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.yield)))
-        , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.yield)))
+        , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.strength model.yield)))
+        , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.strength model.yield)))
         ]
 
 
@@ -146,6 +146,18 @@ brewSelect selectedBrew =
         , brewButton (selectedBrew == Pour) Pour
         , brewButton (selectedBrew == Press) Press
         ]
+
+
+strengthString : Float -> String
+strengthString strength =
+    if strength > 1.11 then
+        "Strong"
+
+    else if strength > 0.89 then
+        "Normal"
+
+    else
+        "Weak"
 
 
 strengthSlider : Float -> Element Msg
@@ -164,10 +176,10 @@ strengthSlider strength =
             )
         ]
         { onChange = SelectStrength
-        , label = Input.labelAbove [] (text ("Strength: " ++ String.fromFloat strength))
-        , min = 1
-        , max = 2
-        , step = Just 0.25
+        , label = Input.labelAbove [] (text ("Strength: " ++ strengthString strength))
+        , min = 0.67
+        , max = 1.33
+        , step = Nothing
         , value = strength
         , thumb =
             Input.defaultThumb

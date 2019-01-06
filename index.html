@@ -4358,7 +4358,7 @@ function _Browser_load(url)
 	}));
 }
 var author$project$Main$Drip = {$: 'Drip'};
-var author$project$Main$init = {selectedBrew: author$project$Main$Drip, strength: 1.5, _yield: 36.0};
+var author$project$Main$init = {selectedBrew: author$project$Main$Drip, strength: 1.0, _yield: 36.0};
 var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -4471,15 +4471,15 @@ var mdgriffith$elm_ui$Element$rgb255 = F3(
 	});
 var author$project$Main$creme = A3(mdgriffith$elm_ui$Element$rgb255, 231, 222, 205);
 var elm$core$Basics$mul = _Basics_mul;
-var author$project$Main$amount = F2(
-	function (brewType, _yield) {
+var author$project$Main$amount = F3(
+	function (brewType, strength, _yield) {
 		switch (brewType.$) {
 			case 'Drip':
-				return _Utils_Tuple2(_yield * 1.875, _yield * 31.25);
+				return _Utils_Tuple2((strength * _yield) * 1.875, _yield * 31.25);
 			case 'Pour':
-				return _Utils_Tuple2(_yield * 2.059, _yield * 34.483);
+				return _Utils_Tuple2((strength * _yield) * 2.059, _yield * 34.483);
 			default:
-				return _Utils_Tuple2(_yield * 2.143, _yield * 32.143);
+				return _Utils_Tuple2((strength * _yield) * 2.143, _yield * 32.143);
 		}
 	});
 var author$project$Main$Pour = {$: 'Pour'};
@@ -10703,6 +10703,9 @@ var author$project$Main$gramsWater = function (amounts) {
 var author$project$Main$SelectStrength = function (a) {
 	return {$: 'SelectStrength', a: a};
 };
+var author$project$Main$strengthString = function (strength) {
+	return (strength > 1.11) ? 'Strong' : ((strength > 0.89) ? 'Normal' : 'Weak');
+};
 var mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
 var mdgriffith$elm_ui$Internal$Model$Nearby = F2(
 	function (a, b) {
@@ -11389,11 +11392,11 @@ var author$project$Main$strengthSlider = function (strength) {
 				mdgriffith$elm_ui$Element$Input$labelAbove,
 				_List_Nil,
 				mdgriffith$elm_ui$Element$text(
-					'Strength: ' + elm$core$String$fromFloat(strength))),
-			max: 2,
-			min: 1,
+					'Strength: ' + author$project$Main$strengthString(strength))),
+			max: 1.33,
+			min: 0.67,
 			onChange: author$project$Main$SelectStrength,
-			step: elm$core$Maybe$Just(0.25),
+			step: elm$core$Maybe$Nothing,
 			thumb: mdgriffith$elm_ui$Element$Input$defaultThumb,
 			value: strength
 		});
@@ -11473,14 +11476,14 @@ var author$project$Main$pageLayout = function (model) {
 					[mdgriffith$elm_ui$Element$centerX]),
 				mdgriffith$elm_ui$Element$text(
 					author$project$Main$gramsCoffee(
-						A2(author$project$Main$amount, model.selectedBrew, model._yield)))),
+						A3(author$project$Main$amount, model.selectedBrew, model.strength, model._yield)))),
 				A2(
 				mdgriffith$elm_ui$Element$el,
 				_List_fromArray(
 					[mdgriffith$elm_ui$Element$centerX]),
 				mdgriffith$elm_ui$Element$text(
 					author$project$Main$gramsWater(
-						A2(author$project$Main$amount, model.selectedBrew, model._yield))))
+						A3(author$project$Main$amount, model.selectedBrew, model.strength, model._yield))))
 			]));
 };
 var mdgriffith$elm_ui$Internal$Model$OnlyDynamic = F2(
