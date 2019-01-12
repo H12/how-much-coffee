@@ -1,6 +1,8 @@
 module Main exposing
-    ( Model
+    ( Brew(..)
+    , Model
     , Msg(..)
+    , brewToString
     , init
     , main
     , update
@@ -30,8 +32,8 @@ type Brew
     | Press
 
 
-toString : Maybe Brew -> String
-toString brew =
+brewToString : Maybe Brew -> String
+brewToString brew =
     case brew of
         Just Drip ->
             "Drip"
@@ -217,7 +219,7 @@ brewButton selected brew =
     Input.button
         (statusAttrs selected brown)
         { onPress = Just (SelectBrew brew)
-        , label = el trueCenter (text (toString (Just brew)))
+        , label = el trueCenter (text (brewToString (Just brew)))
         }
 
 
