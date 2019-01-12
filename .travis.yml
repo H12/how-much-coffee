@@ -1,1 +1,3 @@
 language: elm
+after_success:
+    - elm make src/Main.elm
