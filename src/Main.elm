@@ -105,10 +105,10 @@ amount brewType strength yield =
             ( strength * yield * 1.875, yield * 31.25 )
 
         Pour ->
-            ( strength * yield * 2.059, yield * 34.483 )
+            ( strength * yield * 2.25, yield * 34.5 )
 
         Press ->
-            ( strength * yield * 2.143, yield * 32.143 )
+            ( strength * yield * 2.25, yield * 32.25 )
 
 
 gramsCoffee : ( Float, Float ) -> String
