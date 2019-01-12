@@ -1,10 +1,9 @@
 language: elm
-script:
-    - elm make src/Main.elm
 deploy:
     provider: pages
     skip-cleanup: true
     github-token: $GITHUB_TOKEN
     keep-history: true
+    script: elm make src/Main.elm
     on:
         branch: travis
