@@ -223,15 +223,6 @@ brewButton selected brew =
         }
 
 
-yieldButton : Bool -> Float -> Element Msg
-yieldButton selected yield =
-    Input.button
-        (statusAttrs selected blue)
-        { onPress = Just (SelectYield yield)
-        , label = el trueCenter (text (String.fromFloat yield))
-        }
-
-
 trueCenter : List (Attribute Msg)
 trueCenter =
     [ centerX, centerY ]
