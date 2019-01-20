@@ -52,8 +52,14 @@ brewToString brew =
 -- UNITS
 
 
-type Units
-    = Grams
+type Mass
+    = Grams Float
+    | Ounces Float
+
+
+type Volume
+    = FluidOunces Float
+    | Cups Float
 
 
 
