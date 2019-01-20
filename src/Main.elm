@@ -69,7 +69,7 @@ type Volume
 type alias Model =
     { selectedBrew : Brew
     , strength : Float
-    , yield : Float
+    , yield : Volume
     }
 
 
@@ -77,7 +77,7 @@ init : Model
 init =
     { selectedBrew = Drip
     , strength = 1.0
-    , yield = 36.0
+    , yield = FluidOunces 4.0
     }
 
 
@@ -98,33 +98,67 @@ update msg model =
             { model | selectedBrew = newBrew }
 
         SelectYield yield ->
-            { model | yield = yield }
+            { model | yield = newYield model yield }
 
         SelectStrength strength ->
             { model | strength = strength }
 
 
-amount : Brew -> Float -> Float -> ( Float, Float )
-amount brewType strength yield =
+newYield : Model -> Float -> Volume
+newYield model newAmount =
+    case model.yield of
+        Cups oldAmount ->
+            Cups newAmount
+
+        FluidOunces oldAmount ->
+            FluidOunces newAmount
+
+
+volumeConversion : Volume -> Float
+volumeConversion unitType =
+    case unitType of
+        FluidOunces amount ->
+            1.0
+
+        Cups amount ->
+            8.0
+
+
+yieldAmount : Volume -> Float
+yieldAmount yield =
+    case yield of
+        FluidOunces amount ->
+            amount
+
+        Cups amount ->
+            amount
+
+
+inputAmount : Brew -> Float -> Volume -> ( Float, Float )
+inputAmount brewType strength yield =
+    let
+        convertedVolume =
+            volumeConversion yield * yieldAmount yield
+    in
     case brewType of
         Drip ->
-            ( strength * yield * 1.875, yield * 31.25 )
+            ( strength * convertedVolume * 1.875, convertedVolume * 31.25 )
 
         Pour ->
-            ( strength * yield * 2.25, yield * 34.5 )
+            ( strength * convertedVolume * 2.25, convertedVolume * 34.5 )
 
         Press ->
-            ( strength * yield * 2.25, yield * 32.25 )
+            ( strength * convertedVolume * 2.25, convertedVolume * 32.25 )
 
 
 gramsCoffee : ( Float, Float ) -> String
-gramsCoffee amounts =
-    String.fromInt (round <| Tuple.first amounts) ++ " grams of coffee"
+gramsCoffee inputAmounts =
+    String.fromInt (round <| Tuple.first inputAmounts) ++ " grams of coffee"
 
 
 gramsWater : ( Float, Float ) -> String
-gramsWater amounts =
-    String.fromInt (round <| Tuple.second amounts) ++ " grams of water"
+gramsWater inputAmounts =
+    String.fromInt (round <| Tuple.second inputAmounts) ++ " grams of water"
 
 
 
@@ -142,8 +176,8 @@ pageLayout model =
         [ brewSelect model.selectedBrew
         , strengthSlider model.strength
         , yieldSlider model.yield
-        , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.strength model.yield)))
-        , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.strength model.yield)))
+        , el [ centerX ] (text (gramsCoffee (inputAmount model.selectedBrew model.strength model.yield)))
+        , el [ centerX ] (text (gramsWater (inputAmount model.selectedBrew model.strength model.yield)))
         ]
 
 
@@ -171,18 +205,7 @@ strengthString strength =
 strengthSlider : Float -> Element Msg
 strengthSlider strength =
     Input.slider
-        [ Element.height (Element.px 30)
-        , Element.behindContent
-            (Element.el
-                [ width fill
-                , height (Element.px 2)
-                , centerY
-                , Background.color brown
-                , Border.rounded 3
-                ]
-                Element.none
-            )
-        ]
+        sliderStyles
         { onChange = SelectStrength
         , label = Input.labelAbove [] (text ("Strength: " ++ strengthString strength))
         , min = 0.67
@@ -194,35 +217,78 @@ strengthSlider strength =
         }
 
 
-yieldSlider : Float -> Element Msg
+yieldSlider : Volume -> Element Msg
 yieldSlider yield =
     Input.slider
-        [ Element.height (Element.px 30)
-        , Element.behindContent
-            (Element.el
-                [ width fill
-                , height (Element.px 2)
-                , centerY
-                , Background.color brown
-                , Border.rounded 3
-                ]
-                Element.none
-            )
-        ]
-        { onChange = SelectYield
-        , label = yieldLabel yield
-        , min = 8
-        , max = 64
-        , step = Just 1
-        , value = yield
-        , thumb =
-            Input.defaultThumb
+        sliderStyles
+        (yieldSliderSettings yield)
+
+
+sliderStyles : List (Attribute Msg)
+sliderStyles =
+    [ Element.height (Element.px 32)
+    , Element.behindContent
+        (Element.el
+            [ width fill
+            , height (Element.px 2)
+            , centerY
+            , Background.color brown
+            , Border.rounded 3
+            ]
+            Element.none
+        )
+    ]
+
+
+yieldSliderSettings :
+    Volume
+    ->
+        { onChange : Float -> Msg
+        , label : Input.Label msg
+        , min : Float
+        , max : Float
+        , value : Float
+        , thumb : Input.Thumb
+        , step : Maybe Float
         }
+yieldSliderSettings yield =
+    case yield of
+        Cups amount ->
+            { onChange = SelectYield
+            , label = yieldLabel yield
+            , min = 1
+            , max = 8
+            , step = Just 0.125
+            , value = yieldAmount yield
+            , thumb =
+                Input.defaultThumb
+            }
+
+        FluidOunces amount ->
+            { onChange = SelectYield
+            , label = yieldLabel yield
+            , min = 8
+            , max = 64
+            , step = Just 1
+            , value = yieldAmount yield
+            , thumb =
+                Input.defaultThumb
+            }
 
 
-yieldLabel : Float -> Input.Label msg
+yieldLabel : Volume -> Input.Label msg
 yieldLabel yield =
-    Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
+    Input.labelAbove [] (text (yieldString yield))
+
+
+yieldString : Volume -> String
+yieldString yield =
+    case yield of
+        Cups amount ->
+            "Yield: " ++ String.fromFloat amount ++ " cups"
+
+        FluidOunces amount ->
+            "Yield: " ++ String.fromFloat amount ++ " ounces"
 
 
 brewButton : Bool -> Brew -> Element Msg
