@@ -204,7 +204,7 @@ yieldSlider yield =
             )
         ]
         { onChange = SelectYield
-        , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
+        , label = yieldLabel yield
         , min = 8
         , max = 64
         , step = Just 1
@@ -212,6 +212,11 @@ yieldSlider yield =
         , thumb =
             Input.defaultThumb
         }
+
+
+yieldLabel : Float -> Input.Label msg
+yieldLabel yield =
+    Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
 
 
 brewButton : Bool -> Brew -> Element Msg
