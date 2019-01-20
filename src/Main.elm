@@ -87,8 +87,8 @@ init =
 
 type Msg
     = SelectBrew Brew
-    | SelectYield Float
     | SelectStrength Float
+    | SetYieldAmount Float
 
 
 update : Msg -> Model -> Model
@@ -97,7 +97,7 @@ update msg model =
         SelectBrew newBrew ->
             { model | selectedBrew = newBrew }
 
-        SelectYield yield ->
+        SetYieldAmount yield ->
             { model | yield = newYield model yield }
 
         SelectStrength strength ->
@@ -254,7 +254,7 @@ yieldSliderSettings :
 yieldSliderSettings yield =
     case yield of
         Cups amount ->
-            { onChange = SelectYield
+            { onChange = SetYieldAmount
             , label = yieldLabel yield
             , min = 1
             , max = 8
@@ -265,7 +265,7 @@ yieldSliderSettings yield =
             }
 
         FluidOunces amount ->
-            { onChange = SelectYield
+            { onChange = SetYieldAmount
             , label = yieldLabel yield
             , min = 8
             , max = 64
@@ -304,7 +304,7 @@ yieldButton : Bool -> Float -> Element Msg
 yieldButton selected yield =
     Input.button
         (statusAttrs selected blue)
-        { onPress = Just (SelectYield yield)
+        { onPress = Just (SetYieldAmount yield)
         , label = el trueCenter (text (String.fromFloat yield))
         }
 
