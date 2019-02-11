@@ -127,7 +127,17 @@ gramsWater amounts =
 
 view : Model -> Html Msg
 view model =
-    Element.layout [ Background.color creme ] (pageLayout model)
+    Element.layout
+        [ Background.color creme
+        , Font.family
+            [ Font.external
+                { name = "Source Sans Pro"
+                , url = "https://fonts.googleapis.com/css?family=Source+Sans+Pro"
+                }
+            , Font.sansSerif
+            ]
+        ]
+        (pageLayout model)
 
 
 pageLayout : Model -> Element Msg
