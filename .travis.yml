@@ -9,4 +9,4 @@ deploy:
     on:
         branch: master
 after_success:
-    - elm make src/Main.elm --output=dist/index.html
+    - elm make src/Main.elm --optimize --output=dist/index.html
