@@ -75,10 +75,6 @@ init =
     }
 
 
-
--- UPDATE
-
-
 type Msg
     = SelectBrew Brew
     | SelectYield Float
@@ -127,7 +123,7 @@ gramsWater amounts =
 
 view : Model -> Html Msg
 view model =
-    Element.layout
+    layout
         [ Background.color creme
         , Font.family
             [ Font.external
@@ -175,16 +171,16 @@ strengthString strength =
 strengthSlider : Float -> Element Msg
 strengthSlider strength =
     Input.slider
-        [ Element.height (Element.px 30)
-        , Element.behindContent
-            (Element.el
+        [ height (px 30)
+        , behindContent
+            (el
                 [ width fill
-                , height (Element.px 2)
+                , height (px 2)
                 , centerY
                 , Background.color brown
                 , Border.rounded 3
                 ]
-                Element.none
+                none
             )
         ]
         { onChange = SelectStrength
@@ -201,16 +197,16 @@ strengthSlider strength =
 yieldSlider : Float -> Element Msg
 yieldSlider yield =
     Input.slider
-        [ Element.height (Element.px 30)
-        , Element.behindContent
-            (Element.el
+        [ height (px 30)
+        , behindContent
+            (el
                 [ width fill
-                , height (Element.px 2)
+                , height (px 2)
                 , centerY
                 , Background.color brown
                 , Border.rounded 3
                 ]
-                Element.none
+                none
             )
         ]
         { onChange = SelectYield
