@@ -16,7 +16,9 @@ jobs:
         chmod +x elm
         sudo mv elm /usr/local/bin
     - name: Build
-      run: elm make src/Main.elm --optimize --output=dist/elm.js
+      run: |
+        elm make src/Main.elm --optimize --output=dist/elm.js
+        cp CNAME ./dist/CNAME
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.0
       env:
