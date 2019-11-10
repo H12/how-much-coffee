@@ -28,7 +28,6 @@ main =
 
 type Brew
     = Drip
-    | Pour
     | Press
 
 
@@ -37,9 +36,6 @@ brewToString brew =
     case brew of
         Just Drip ->
             "Drip"
-
-        Just Pour ->
-            "Pour"
 
         Just Press ->
             "Press"
@@ -100,9 +96,6 @@ amount brewType strength yield =
         Drip ->
             ( strength * yield * 1.875, yield * 31.25 )
 
-        Pour ->
-            ( strength * yield * 2.25, yield * 34.5 )
-
         Press ->
             ( strength * yield * 2.25, yield * 32.25 )
 
@@ -151,7 +144,6 @@ brewSelect : Brew -> Element Msg
 brewSelect selectedBrew =
     row [ width fill, spacing 30 ]
         [ brewButton (selectedBrew == Drip) Drip
-        , brewButton (selectedBrew == Pour) Pour
         , brewButton (selectedBrew == Press) Press
         ]
 
