@@ -67,7 +67,7 @@ init : Model
 init =
     { selectedBrew = Drip
     , strength = 1.0
-    , yield = 36.0
+    , yield = 3.0
     }
 
 
@@ -94,10 +94,10 @@ amount : Brew -> Float -> Float -> ( Float, Float )
 amount brewType strength yield =
     case brewType of
         Drip ->
-            ( strength * yield * 1.875, yield * 31.25 )
+            ( strength * yield * 15, yield * 250 )
 
         Press ->
-            ( strength * yield * 2.25, yield * 32.25 )
+            ( strength * yield * 18, yield * 250 )
 
 
 gramsCoffee : ( Float, Float ) -> String
@@ -202,10 +202,10 @@ yieldSlider yield =
             )
         ]
         { onChange = SelectYield
-        , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " ounces"))
-        , min = 8
-        , max = 64
-        , step = Just 1
+        , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " servings"))
+        , min = 1
+        , max = 5
+        , step = Just 0.1
         , value = yield
         , thumb =
             Input.defaultThumb
