@@ -123,7 +123,7 @@ view model =
 
 pageLayout : Model -> Element Msg
 pageLayout model =
-    column [ centerX, padding 10, spacing 30 ]
+    column [ centerX, padding 10, spacing 30, width <| px 360 ]
         [ brewSelect model.selectedBrew
         , strengthSlider model.strength
         , yieldSlider model.yield
@@ -134,7 +134,7 @@ pageLayout model =
 
 brewSelect : Brew -> Element Msg
 brewSelect selectedBrew =
-    row [ width fill, spacing 30 ]
+    row [ width fill, paddingXY 32 16, spaceEvenly ]
         [ brewButton (selectedBrew == Drip) Drip
         , brewButton (selectedBrew == Press) Press
         ]
@@ -225,8 +225,8 @@ statusAttrs isActive color =
     , Border.color color
     , Border.width 2
     , Border.rounded 5
-    , height (px 42)
-    , width (px 68)
+    , height (px 54)
+    , width (px 92)
     ]
 
 
