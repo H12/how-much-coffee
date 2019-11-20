@@ -1,4 +1,4 @@
-name: CI
+name: Build, Minify, & Deploy
 
 on: [push]
 
@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
     - name: Setup
       run: |
         curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.0/binary-for-linux-64-bit.gz 
@@ -16,12 +17,14 @@ jobs:
         chmod +x elm
         sudo mv elm /usr/local/bin
         sudo apt-get install node-uglify
+
     - name: Build
       run: |
         elm make src/Main.elm --optimize --output=dist/elm.js
         uglifyjs dist/elm.js --compress 'pure_funcs="F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9",pure_getters,keep_fargs=false,unsafe_comps,unsafe' | uglifyjs --mangle --output=dist/elm.min.js
         rm dist/elm.js
         cp CNAME ./dist/CNAME
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.0
       env:
