@@ -11,6 +11,7 @@ echo '<!DOCTYPE HTML>
 <head>
 <meta charset="UTF-8">
 <title>Main</title>
+<meta name="Description" content="A simple coffee calculator.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
