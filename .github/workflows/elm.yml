@@ -21,6 +21,8 @@ jobs:
     - name: Build
       run: |
         bash scripts/build.sh
+        cp -r images/. dist/
+        cp manifest.json ./dist/manifest.json
         cp CNAME ./dist/CNAME
 
     - name: Deploy

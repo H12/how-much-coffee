@@ -1,0 +1,16 @@
+{
+  "short_name": "howmuch.coffee",
+  "name": "How Much Coffee?",
+  "icons": [
+    {
+      "src": "/icons-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#e7decd",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#e7decd"
+}
