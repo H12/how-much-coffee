@@ -12,6 +12,10 @@ echo '<!DOCTYPE HTML>
 <title>How much coffee?</title>
 <link rel="icon" type="image/png" href="icons-192.png">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="/images/icons/icons-152.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Coffee PWA">
 <meta charset="UTF-8">
 <meta name="Description" content="A simple coffee calculator.">
 <meta name="theme-color" content="#e7decd">
@@ -22,6 +26,14 @@ echo '<!DOCTYPE HTML>
 <script>' > $output
 cat public/elm.min.js >> $output
 echo 'var app = Elm.Main.init({ node: document.getElementById("elm-app") });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+        .then((reg) => {
+          console.log("Service worker registered.", reg);
+        });
+  });
+}
 </script>
 </body>
 </html>' >> $output
@@ -29,5 +41,6 @@ echo 'var app = Elm.Main.init({ node: document.getElementById("elm-app") });
 rm public/elm.js
 rm public/elm.min.js
 
-cp -r images/. public/
+cp -r assets/images/. public/
 cp manifest.json ./public/manifest.json
+cp scripts/service-worker.js ./public/service-worker.js
