@@ -1,9 +1,8 @@
 module Tests exposing (suite)
 
-import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
-import Main exposing (..)
-import Test exposing (..)
+import Expect
+import Main exposing (Brew(..))
+import Test exposing (Test, describe, test)
 
 
 suite : Test
@@ -11,7 +10,6 @@ suite =
     describe "Main"
         [ describe "Main.brewToString"
             [ testBrewString Drip "Drip"
-            , testBrewString Pour "Pour"
             , testBrewString Press "Press"
             , test "returns empty string when passed Nothing" <|
                 \_ ->
@@ -27,5 +25,5 @@ testBrewString brewType brewString =
     test ("returns the String '" ++ brewString ++ "' for its given Brew") <|
         \_ ->
             Just brewType
-                |> brewToString
+                |> Main.brewToString
                 |> Expect.equal brewString

@@ -10,7 +10,30 @@ module Main exposing
     )
 
 import Browser
-import Element exposing (..)
+import Element
+    exposing
+        ( Attribute
+        , Color
+        , Element
+        , behindContent
+        , centerX
+        , centerY
+        , column
+        , el
+        , fill
+        , height
+        , layout
+        , none
+        , padding
+        , paddingXY
+        , px
+        , rgb255
+        , row
+        , spaceEvenly
+        , spacing
+        , text
+        , width
+        )
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
@@ -18,6 +41,7 @@ import Element.Input as Input
 import Html exposing (Html)
 
 
+main : Program () Model Msg
 main =
     Browser.sandbox { init = init, update = update, view = view }
 
@@ -42,14 +66,6 @@ brewToString brew =
 
         Nothing ->
             ""
-
-
-
--- UNITS
-
-
-type Units
-    = Grams
 
 
 
@@ -117,7 +133,7 @@ gramsWater amounts =
 view : Model -> Html Msg
 view model =
     layout
-        [ Background.color creme]
+        [ Background.color creme ]
         (pageLayout model)
 
 
@@ -228,11 +244,6 @@ statusAttrs isActive color =
     , height (px 54)
     , width (px 92)
     ]
-
-
-blue : Color
-blue =
-    rgb255 125 132 178
 
 
 brown : Color
