@@ -1,7 +1,12 @@
 {
-  "short_name": "howmuch.coffee",
+  "short_name": "Coffee",
   "name": "How Much Coffee?",
   "icons": [
+    {
+      "src": "/icons-152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
     {
       "src": "/icons-192.png",
       "type": "image/png",
