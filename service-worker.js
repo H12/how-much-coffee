@@ -44,7 +44,7 @@ self.addEventListener('fetch', (evt) => {
   evt.respondWith(
     fetch(evt.request).catch(async () => {
       const cache = await caches.open(CACHE_NAME);
-      return cache.match('offline.html');
+      return cache.match('index.html');
     })
   );
 });
