@@ -19,9 +19,9 @@
     },
     {
       "purpose": "maskable",
-      "src": "/icons-bg-512.png",
+      "src": "/icons-mask-256.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "256x256"
     }
   ],
   "start_url": "/",
