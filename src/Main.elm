@@ -15,12 +15,15 @@ import Element
         ( Attribute
         , Color
         , Element
+        , alignBottom
+        , alignRight
         , behindContent
         , centerX
         , centerY
         , column
         , el
         , fill
+        , fillPortion
         , height
         , layout
         , none
@@ -83,7 +86,7 @@ init : Model
 init =
     { selectedBrew = Drip
     , strength = 1.0
-    , yield = 3.0
+    , yield = 4.0
     }
 
 
@@ -106,24 +109,14 @@ update msg model =
             { model | strength = strength }
 
 
-amount : Brew -> Float -> Float -> ( Float, Float )
-amount brewType strength yield =
+calculateAmounts : Brew -> Float -> Float -> ( Float, Float )
+calculateAmounts brewType strength yield =
     case brewType of
         Drip ->
-            ( strength * yield * 15, yield * 250 )
+            ( strength * yield * 15, yield * 240 )
 
         Press ->
-            ( strength * yield * 18, yield * 250 )
-
-
-gramsCoffee : ( Float, Float ) -> String
-gramsCoffee amounts =
-    String.fromInt (round <| Tuple.first amounts) ++ " grams of coffee"
-
-
-gramsWater : ( Float, Float ) -> String
-gramsWater amounts =
-    String.fromInt (round <| Tuple.second amounts) ++ " grams of water"
+            ( strength * yield * 18, yield * 240 )
 
 
 
@@ -139,12 +132,20 @@ view model =
 
 pageLayout : Model -> Element Msg
 pageLayout model =
-    column [ centerX, padding 10, spacing 30, width <| px 360 ]
+    column [ centerX, height fill, padding 10, spacing 30, width <| px 320 ]
         [ brewSelect model.selectedBrew
         , strengthSlider model.strength
         , yieldSlider model.yield
-        , el [ centerX ] (text (gramsCoffee (amount model.selectedBrew model.strength model.yield)))
-        , el [ centerX ] (text (gramsWater (amount model.selectedBrew model.strength model.yield)))
+        , coffeeResults <| calculateAmounts model.selectedBrew model.strength model.yield
+        , el
+            [ Font.color (darken3 creme)
+            , Font.size 12
+            , Font.family [ Font.monospace ]
+            , alignBottom
+            , centerX
+            , paddingXY 0 12
+            ]
+            (text "Iconography courtesy of stockio")
         ]
 
 
@@ -154,6 +155,23 @@ brewSelect selectedBrew =
         [ brewButton (selectedBrew == Drip) Drip
         , brewButton (selectedBrew == Press) Press
         ]
+
+
+strengthSlider : Float -> Element Msg
+strengthSlider strength =
+    Input.slider
+        [ height (px 30)
+        , sliderTrack
+        ]
+        { onChange = SelectStrength
+        , label = Input.labelAbove sliderLabelAttrs (text ("Strength: " ++ strengthString strength))
+        , min = 0.67
+        , max = 1.33
+        , step = Nothing
+        , value = strength
+        , thumb =
+            sliderThumb
+        }
 
 
 strengthString : Float -> String
@@ -168,82 +186,205 @@ strengthString strength =
         "Weak"
 
 
-strengthSlider : Float -> Element Msg
-strengthSlider strength =
-    Input.slider
-        [ height (px 30)
-        , behindContent
-            (el
-                [ width fill
-                , height (px 2)
-                , centerY
-                , Background.color brown
-                , Border.rounded 3
-                ]
-                none
-            )
-        ]
-        { onChange = SelectStrength
-        , label = Input.labelAbove [] (text ("Strength: " ++ strengthString strength))
-        , min = 0.67
-        , max = 1.33
-        , step = Nothing
-        , value = strength
-        , thumb =
-            Input.defaultThumb
-        }
-
-
 yieldSlider : Float -> Element Msg
 yieldSlider yield =
     Input.slider
         [ height (px 30)
-        , behindContent
-            (el
-                [ width fill
-                , height (px 2)
-                , centerY
-                , Background.color brown
-                , Border.rounded 3
-                ]
-                none
-            )
+        , sliderTrack
         ]
         { onChange = SelectYield
-        , label = Input.labelAbove [] (text ("Yield: " ++ String.fromFloat yield ++ " servings"))
+        , label = Input.labelAbove sliderLabelAttrs (text ("Yield: " ++ yieldString yield ++ " cups"))
         , min = 1
-        , max = 5
-        , step = Just 0.1
+        , max = 7
+        , step = Just 0.25
         , value = yield
         , thumb =
-            Input.defaultThumb
+            sliderThumb
         }
+
+
+yieldString : Float -> String
+yieldString yield =
+    let
+        base =
+            toFloat (truncate yield)
+
+        remainder =
+            yield - base
+    in
+    if remainder > 0.9375 then
+        String.fromFloat (base + 1) ++ " "
+
+    else if remainder > 0.8125 && remainder <= 0.9375 then
+        String.fromFloat base ++ "⅞"
+
+    else if remainder > 0.6875 && remainder <= 0.8125 then
+        String.fromFloat base ++ "¾"
+
+    else if remainder > 0.5625 && remainder <= 0.6875 then
+        String.fromFloat base ++ "⅝"
+
+    else if remainder > 0.4375 && remainder <= 0.5625 then
+        String.fromFloat base ++ "½"
+
+    else if remainder > 0.3125 && remainder <= 0.4375 then
+        String.fromFloat base ++ "⅜"
+
+    else if remainder > 0.1875 && remainder <= 0.3125 then
+        String.fromFloat base ++ "¼"
+
+    else if remainder > 0.0625 && remainder <= 0.1875 then
+        String.fromFloat base ++ "⅛"
+
+    else
+        String.fromFloat base ++ " "
+
+
+sliderLabelAttrs : List (Attribute Msg)
+sliderLabelAttrs =
+    [ Font.family
+        [ Font.monospace ]
+    ]
+
+
+sliderTrack : Attribute msg
+sliderTrack =
+    behindContent
+        (el
+            [ width fill
+            , height (px 12)
+            , centerY
+            , Background.color brown
+            , Border.rounded 6
+            , Border.width 2
+            ]
+            none
+        )
+
+
+sliderThumb : Input.Thumb
+sliderThumb =
+    Input.thumb
+        (thumbSize 24
+            ++ [ Background.color white
+               , Border.color black
+               ]
+        )
+
+
+thumbSize : Int -> List (Attribute Never)
+thumbSize size =
+    [ Border.width 2
+    , Border.rounded size
+    , height (px size)
+    , width (px <| round (toFloat size * 1.618))
+    ]
 
 
 brewButton : Bool -> Brew -> Element Msg
 brewButton selected brew =
     Input.button
-        (statusAttrs selected brown)
+        (statusAttrs selected)
         { onPress = Just (SelectBrew brew)
-        , label = el trueCenter (text (brewToString (Just brew)))
+        , label = el [ centerX, centerY ] (brewImage brew 48)
         }
 
 
-trueCenter : List (Attribute Msg)
-trueCenter =
-    [ centerX, centerY ]
+brewImage : Brew -> Int -> Element Msg
+brewImage brew =
+    case brew of
+        Drip ->
+            chemexSvg
+
+        Press ->
+            frenchPressSvg
 
 
-statusAttrs : Bool -> Color -> List (Attribute Msg)
-statusAttrs isActive color =
-    [ Background.color (ternary isActive color white)
-    , Font.color (ternary isActive white color)
-    , Border.color color
-    , Border.width 2
-    , Border.rounded 5
-    , height (px 54)
-    , width (px 92)
+chemexSvg : Int -> Element Msg
+chemexSvg size =
+    Element.image
+        [ width (px size)
+        ]
+        { src = "chemex.svg", description = "Percolation Brewing" }
+
+
+frenchPressSvg : Int -> Element Msg
+frenchPressSvg size =
+    Element.image
+        [ width (px size)
+        ]
+        { src = "french-press.svg", description = "Immersion Brewing" }
+
+
+statusAttrs : Bool -> List (Attribute Msg)
+statusAttrs isActive =
+    [ Background.color white
+    , Border.color black
+    , Border.widthEach
+        { bottom = ternary isActive 2 5
+        , left = 2
+        , right = 2
+        , top = 2
+        }
+    , Border.rounded 16
+    , height (px <| ternary isActive 89 92)
+    , width (px 72)
     ]
+
+
+coffeeResults : ( Float, Float ) -> Element Msg
+coffeeResults amountTuple =
+    let
+        ( gramsCoffee, gramsWater ) =
+            amountTuple
+    in
+    column [ centerX, width fill ]
+        [ formattedAmount gramsCoffee "g coffee"
+        , formattedAmount gramsWater "g water"
+        ]
+
+
+formattedAmount : Float -> String -> Element Msg
+formattedAmount amount label =
+    row
+        [ centerX, width fill ]
+        [ amountText <| String.fromInt (round amount)
+        , amountLabel label
+        ]
+
+
+amountText : String -> Element Msg
+amountText amountString =
+    el
+        [ Border.color <| darken creme
+        , Border.widthEach
+            { bottom = 0
+            , left = 0
+            , right = 1
+            , top = 0
+            }
+        , Font.family [ Font.monospace ]
+        , Font.size 48
+        , Font.extraLight
+        , padding 8
+        , width <| fillPortion 1
+        ]
+        (el [ alignRight ] <| text amountString)
+
+
+amountLabel : String -> Element Msg
+amountLabel labelText =
+    el
+        [ Font.family [ Font.monospace ]
+        , padding 8
+        , width <| fillPortion 1
+        ]
+        (text labelText)
+
+
+black : Color
+black =
+    rgb255 5 4 2
 
 
 brown : Color
@@ -259,6 +400,33 @@ creme =
 white : Color
 white =
     rgb255 251 250 248
+
+
+darken3 : Color -> Color
+darken3 color =
+    darken (darken2 color)
+
+
+darken2 : Color -> Color
+darken2 color =
+    darken (darken color)
+
+
+darken : Color -> Color
+darken color =
+    let
+        darkenFactor =
+            0.75
+
+        rgb =
+            Element.toRgb color
+    in
+    Element.fromRgb <|
+        { rgb
+            | red = rgb.red * darkenFactor
+            , green = rgb.green * darkenFactor
+            , blue = rgb.green * darkenFactor
+        }
 
 
 

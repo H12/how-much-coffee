@@ -42,5 +42,6 @@ rm public/elm.js
 rm public/elm.min.js
 
 cp -r assets/images/. public/
+cp -r assets/vectors/. public/
 cp manifest.json ./public/manifest.json
 cp scripts/service-worker.js ./public/service-worker.js
