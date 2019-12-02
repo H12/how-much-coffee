@@ -165,8 +165,8 @@ strengthSlider strength =
         ]
         { onChange = SelectStrength
         , label = Input.labelAbove sliderLabelAttrs (text ("Strength: " ++ strengthString strength))
-        , min = 0.67
-        , max = 1.33
+        , min = 0.5
+        , max = 1.5
         , step = Nothing
         , value = strength
         , thumb =
@@ -176,10 +176,10 @@ strengthSlider strength =
 
 strengthString : Float -> String
 strengthString strength =
-    if strength > 1.11 then
+    if strength > 1.17 then
         "Strong"
 
-    else if strength > 0.89 then
+    else if strength > 0.83 then
         "Normal"
 
     else
