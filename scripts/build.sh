@@ -21,7 +21,7 @@ echo '<!DOCTYPE HTML>
 <meta name="theme-color" content="#e7decd">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body style="overscroll-behavior-y: none;">
 <div id="elm-app"></div>
 <script>' > $output
 cat public/elm.min.js >> $output
