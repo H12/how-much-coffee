@@ -24,7 +24,9 @@ import Element
         , el
         , fill
         , fillPortion
+        , fromRgb
         , height
+        , image
         , layout
         , none
         , padding
@@ -35,6 +37,7 @@ import Element
         , spaceEvenly
         , spacing
         , text
+        , toRgb
         , width
         )
 import Element.Background as Background
@@ -302,7 +305,7 @@ brewImage brew =
 
 chemexSvg : Int -> Element Msg
 chemexSvg size =
-    Element.image
+    image
         [ width (px size)
         ]
         { src = "chemex.svg", description = "Percolation Brewing" }
@@ -310,7 +313,7 @@ chemexSvg size =
 
 frenchPressSvg : Int -> Element Msg
 frenchPressSvg size =
-    Element.image
+    image
         [ width (px size)
         ]
         { src = "french-press.svg", description = "Immersion Brewing" }
@@ -419,9 +422,9 @@ darken color =
             0.75
 
         rgb =
-            Element.toRgb color
+            toRgb color
     in
-    Element.fromRgb <|
+    fromRgb <|
         { rgb
             | red = rgb.red * darkenFactor
             , green = rgb.green * darkenFactor
