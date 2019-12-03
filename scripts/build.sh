@@ -35,6 +35,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+<noscript style="font-family:monospace;">howmuch.coffee cannot function without java(script)</noscript>
 </body>
 </html>' >> $output
 
