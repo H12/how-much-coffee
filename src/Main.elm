@@ -24,10 +24,11 @@ import Element
         , el
         , fill
         , fillPortion
+        , focusStyle
         , fromRgb
         , height
         , image
-        , layout
+        , layoutWith
         , none
         , padding
         , paddingXY
@@ -128,7 +129,15 @@ calculateAmounts brewType strength yield =
 
 view : Model -> Html Msg
 view model =
-    layout
+    layoutWith
+        { options =
+            [ focusStyle
+                { borderColor = Nothing
+                , backgroundColor = Nothing
+                , shadow = Nothing
+                }
+            ]
+        }
         [ Background.color creme ]
         (pageLayout model)
 
