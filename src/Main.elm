@@ -401,7 +401,7 @@ black =
 
 brown : Color
 brown =
-    rgb255 128 78 73
+    rgb255 111 69 42
 
 
 creme : Color
