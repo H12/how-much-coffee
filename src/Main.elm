@@ -144,11 +144,8 @@ view model =
 
 pageLayout : Model -> Element Msg
 pageLayout model =
-    column [ centerX, height fill, padding 10, spacing 30, width <| px 320 ]
-        [ brewSelect model.selectedBrew
-        , strengthSlider model.strength
-        , yieldSlider model.yield
-        , coffeeResults <| calculateAmounts model.selectedBrew model.strength model.yield
+    column [ centerX, height fill, spacing 42 ]
+        [ el [ centerY ] (calculator model)
         , el
             [ Font.color (darken3 creme)
             , Font.size 12
@@ -158,6 +155,17 @@ pageLayout model =
             , paddingXY 0 12
             ]
             (text "Iconography courtesy of stockio")
+        ]
+
+
+calculator : Model -> Element Msg
+calculator model =
+    column
+        [ centerX, height fill, padding 10, spacing 30, width <| px 320 ]
+        [ brewSelect model.selectedBrew
+        , strengthSlider model.strength
+        , yieldSlider model.yield
+        , coffeeResults <| calculateAmounts model.selectedBrew model.strength model.yield
         ]
 
 
