@@ -17,9 +17,15 @@ echo '<!DOCTYPE HTML>
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Coffee PWA">
 <meta charset="UTF-8">
-<meta name="Description" content="A simple coffee calculator.">
+<meta name="description" content="A simple coffee calculator.">
 <meta name="theme-color" content="#e7decd">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="How much coffee?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://howmuch.coffee">
+<meta property="og:image:url" content="http://howmuch.coffee/images/icons/icons-512.png">
+<meta property="og:image:secure_url" content="https://howmuch.coffee/images/icons/icons-512.png">
+<meta property="og:image:type" content="image/png">
 </head>
 <body style="overscroll-behavior-y: none;">
 <div id="elm-app"></div>
