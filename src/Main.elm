@@ -15,7 +15,6 @@ import Element
         ( Attribute
         , Color
         , Element
-        , alignBottom
         , alignRight
         , behindContent
         , centerX
