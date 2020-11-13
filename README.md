@@ -8,17 +8,15 @@ To run this application locally, you need to have Elm 0.19.0.
 
 ## Local Development
 
-Once you're set up with Elm and have cloned this repository, running this application locally is as simple as running:
+Once you're set up with Elm and have cloned this repository, you can run this application locally by running the following in the project root, and navigating to `Main.elm` in the reactor UI:
 
 ```bash
 elm reactor
 ```
 
-...from the project root and navigating to `Main.elm`.
-
 ## Usage
 
-This project has continuous deployment using Travis and GitHub Pages. You can view the latest release at [howmuch.coffee](https://howmuch.coffee).
+This project has continuous deployment using GitHub Actions and GitHub Pages. You can view the latest release at [howmuch.coffee](https://howmuch.coffee).
 
 ## Built With
 
