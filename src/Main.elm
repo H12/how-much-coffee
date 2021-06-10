@@ -321,7 +321,8 @@ brewImage brew =
 chemexSvg : Int -> Element Msg
 chemexSvg size =
     image
-        [ width (px size)
+        [ height (px size)
+        , width (px size)
         ]
         { src = "chemex.svg", description = "Percolation Brewing" }
 
@@ -329,7 +330,8 @@ chemexSvg size =
 frenchPressSvg : Int -> Element Msg
 frenchPressSvg size =
     image
-        [ width (px size)
+        [ height (px size)
+        , width (px size)
         ]
         { src = "french-press.svg", description = "Immersion Brewing" }
 
