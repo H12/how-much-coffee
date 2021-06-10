@@ -116,10 +116,10 @@ calculateAmounts : Brew -> Float -> Float -> ( Float, Float )
 calculateAmounts brewType strength yield =
     case brewType of
         Drip ->
-            ( strength * yield * 15, yield * 240 )
+            ( strength * yield * 15, yield * 240 + (2 * strength * yield * 15) )
 
         Press ->
-            ( strength * yield * 18, yield * 240 )
+            ( strength * yield * 18, yield * 240 + (2 * strength * yield * 15) )
 
 
 
