@@ -214,7 +214,7 @@ yieldSlider yield =
         , label = Input.labelAbove sliderLabelAttrs (text ("Yield: " ++ yieldString yield ++ " cups"))
         , min = 1
         , max = 7
-        , step = Just 0.25
+        , step = Just 0.125
         , value = yield
         , thumb =
             sliderThumb
