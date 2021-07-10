@@ -61,6 +61,11 @@ type Brew
     | Press
 
 
+type YieldUnits
+    = Imperial
+    | Metric
+
+
 brewToString : Maybe Brew -> String
 brewToString brew =
     case brew of
@@ -114,16 +119,34 @@ update msg model =
 
 calculateAmounts : Brew -> Float -> Float -> ( Float, Float )
 calculateAmounts brewType strength yield =
-    let
-        gramsWater =
-            240 * yield / (1 - 2 * strength)
-    in
+    ( calculateGramsCoffee brewType strength yield
+    , calculateGramsWater brewType strength yield
+    )
+
+
+calculateGramsCoffee : Brew -> Float -> Float -> Float
+calculateGramsCoffee brewType strength yield =
     case brewType of
         Drip ->
-            ( gramsWater * strength, gramsWater )
+            strength * calculateGramsWater brewType strength yield
 
         Press ->
-            ( gramsWater * strength * 1.42, gramsWater )
+            pressStrengthFromDrip strength * calculateGramsWater brewType strength yield
+
+
+calculateGramsWater : Brew -> Float -> Float -> Float
+calculateGramsWater brewType strength yield =
+    case brewType of
+        Drip ->
+            240 * yield / (1 - 2 * strength)
+
+        Press ->
+            240 * yield / (1 - 2 * pressStrengthFromDrip strength)
+
+
+pressStrengthFromDrip : Float -> Float
+pressStrengthFromDrip dripStrength =
+    dripStrength * 17 / 14
 
 
 
