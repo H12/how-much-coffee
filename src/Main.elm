@@ -88,7 +88,7 @@ type alias Model =
 init : Model
 init =
     { selectedBrew = Drip
-    , strength = 1.0
+    , strength = 0.06
     , yield = 4.0
     }
 
@@ -114,12 +114,16 @@ update msg model =
 
 calculateAmounts : Brew -> Float -> Float -> ( Float, Float )
 calculateAmounts brewType strength yield =
+    let
+        gramsWater =
+            240 * yield / (1 - 2 * strength)
+    in
     case brewType of
         Drip ->
-            ( strength * yield * 15, yield * 240 + (2 * strength * yield * 15) )
+            ( gramsWater * strength, gramsWater )
 
         Press ->
-            ( strength * yield * 18, yield * 240 + (2 * strength * yield * 15) )
+            ( gramsWater * strength * 1.42, gramsWater )
 
 
 
@@ -183,8 +187,8 @@ strengthSlider strength =
         ]
         { onChange = SelectStrength
         , label = Input.labelAbove sliderLabelAttrs (text ("Strength: " ++ strengthString strength))
-        , min = 0.5
-        , max = 1.5
+        , min = 0.045
+        , max = 0.075
         , step = Nothing
         , value = strength
         , thumb =
@@ -194,10 +198,10 @@ strengthSlider strength =
 
 strengthString : Float -> String
 strengthString strength =
-    if strength > 1.17 then
+    if strength > 0.065 then
         "Strong"
 
-    else if strength > 0.83 then
+    else if strength > 0.055 then
         "Normal"
 
     else
