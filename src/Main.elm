@@ -138,10 +138,10 @@ calculateGramsWater : Brew -> Float -> Float -> Float
 calculateGramsWater brewType strength yield =
     case brewType of
         Drip ->
-            240 * yield / (1 - 2 * strength)
+            240 * yield / (1 - 2.25 * strength)
 
         Press ->
-            240 * yield / (1 - 2 * pressStrengthFromDrip strength)
+            240 * yield / (1 - 2.25 * pressStrengthFromDrip strength)
 
 
 pressStrengthFromDrip : Float -> Float
