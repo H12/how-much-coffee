@@ -30,6 +30,7 @@ import Element
         , layoutWith
         , none
         , padding
+        , paddingEach
         , paddingXY
         , px
         , rgb255
@@ -61,11 +62,6 @@ type Brew
     | Press
 
 
-type YieldUnits
-    = Imperial
-    | Metric
-
-
 brewToString : Maybe Brew -> String
 brewToString brew =
     case brew of
@@ -94,7 +90,7 @@ init : Model
 init =
     { selectedBrew = Drip
     , strength = 0.06
-    , yield = 2.0
+    , yield = 500
     }
 
 
@@ -138,10 +134,10 @@ calculateGramsWater : Brew -> Float -> Float -> Float
 calculateGramsWater brewType strength yield =
     case brewType of
         Drip ->
-            240 * yield / (1 - 2.25 * strength)
+            yield / (1 - 2.25 * strength)
 
         Press ->
-            240 * yield / (1 - 2.25 * pressStrengthFromDrip strength)
+            yield / (1 - 2.25 * pressStrengthFromDrip strength)
 
 
 pressStrengthFromDrip : Float -> Float
@@ -238,14 +234,31 @@ yieldSlider yield =
         , sliderTrack
         ]
         { onChange = SelectYield
-        , label = Input.labelAbove sliderLabelAttrs (text ("Yield: " ++ yieldString yield ++ " cups"))
-        , min = 0.5
-        , max = 3.5
-        , step = Just 0.125
+        , label = Input.labelAbove sliderLabelAttrs (yieldLabel yield)
+        , min = 0
+        , max = 1000
+        , step = Just 5
         , value = yield
         , thumb =
             sliderThumb
         }
+
+
+yieldLabel : Float -> Element msg
+yieldLabel yield =
+    let
+        unitsPadding =
+            { top = 0
+            , right = 111
+            , bottom = 0
+            , left = 0
+            }
+    in
+    row
+        [ paddingEach unitsPadding, spaceEvenly, width fill ]
+        [ text ("Yield: " ++ yieldString yield)
+        , text " mL"
+        ]
 
 
 yieldString : Float -> String
