@@ -94,7 +94,7 @@ init : Model
 init =
     { selectedBrew = Drip
     , strength = 0.06
-    , yield = 4.0
+    , yield = 2.0
     }
 
 
@@ -239,8 +239,8 @@ yieldSlider yield =
         ]
         { onChange = SelectYield
         , label = Input.labelAbove sliderLabelAttrs (text ("Yield: " ++ yieldString yield ++ " cups"))
-        , min = 1
-        , max = 7
+        , min = 0.5
+        , max = 3.5
         , step = Just 0.125
         , value = yield
         , thumb =
