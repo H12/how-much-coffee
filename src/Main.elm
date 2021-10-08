@@ -30,7 +30,6 @@ import Element
         , layoutWith
         , none
         , padding
-        , paddingEach
         , paddingXY
         , px
         , rgb255
@@ -201,18 +200,24 @@ brewSelect selectedBrew =
 strengthSlider : Float -> Element Msg
 strengthSlider strength =
     Input.slider
-        [ height (px 30)
-        , sliderTrack
-        ]
+        [ height (px 30), sliderTrack ]
         { onChange = SelectStrength
-        , label = Input.labelAbove sliderLabelAttrs (text ("Strength: " ++ strengthString strength))
+        , label = Input.labelAbove sliderLabelAttrs (strengthLabel strength)
         , min = 0.045
         , max = 0.075
         , step = Nothing
         , value = strength
-        , thumb =
-            sliderThumb
+        , thumb = sliderThumb
         }
+
+
+strengthLabel : Float -> Element Msg
+strengthLabel strength =
+    row
+        [ spaceEvenly, width fill ]
+        [ text "Strength:"
+        , text (strengthString strength)
+        ]
 
 
 strengthString : Float -> String
@@ -246,18 +251,10 @@ yieldSlider yield =
 
 yieldLabel : Float -> Element msg
 yieldLabel yield =
-    let
-        unitsPadding =
-            { top = 0
-            , right = 111
-            , bottom = 0
-            , left = 0
-            }
-    in
     row
-        [ paddingEach unitsPadding, spaceEvenly, width fill ]
-        [ text ("Yield: " ++ yieldString yield)
-        , text " mL"
+        [ spaceEvenly, width fill ]
+        [ text "Yield:"
+        , text (yieldString yield ++ " mL")
         ]
 
 
@@ -295,7 +292,7 @@ yieldString yield =
         String.fromFloat base ++ "⅛"
 
     else
-        String.fromFloat base ++ " "
+        String.fromFloat base ++ ""
 
 
 sliderLabelAttrs : List (Attribute Msg)
