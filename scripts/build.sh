@@ -9,23 +9,27 @@ uglifyjs public/elm.js --compress 'pure_funcs="F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,
 echo '<!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>How much coffee?</title>
-<link rel="icon" type="image/png" href="icons-192.png">
+<title>Coffee Ratios - Simple Calculator | howmuch.coffee</title>
+<link rel="author" href="https://github.com/sponsors/h12"/>
+<link rel="icon" type="image/png" href="/icons-192.png">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="/images/icons/icons-152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Coffee PWA">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Coffee Calculator">
 <meta charset="UTF-8">
-<meta name="description" content="A simple coffee calculator.">
+<meta name="description" content="A simple coffee calculator that determines the ideal brew ratio for your desired yield and strength. Custom formulas for both for pour over and french press!">
 <meta name="theme-color" content="#e7decd">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:title" content="How much coffee?">
+<meta property="og:title" content="Simple Coffee Calculator">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://howmuch.coffee">
-<meta property="og:image:url" content="http://howmuch.coffee/images/icons/icons-512.png">
-<meta property="og:image:secure_url" content="https://howmuch.coffee/images/icons/icons-512.png">
+<meta property="og:image:url" content="http://howmuch.coffee/icons-1024.png">
+<meta property="og:image:secure_url" content="https://howmuch.coffee/icons-1024.png">
 <meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Cartoon Coffee Beans">
 </head>
 <body style="overscroll-behavior-y: none;">
 <div id="elm-app"></div>

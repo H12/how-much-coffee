@@ -174,7 +174,7 @@ pageLayout model =
             , centerX
             , height <| fillPortion 1
             ]
-            (text "Iconography courtesy of stockio")
+            (text "Iconography courtesy of stockio.com")
         ]
 
 
