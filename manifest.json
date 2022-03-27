@@ -1,12 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "short_name": "Coffee",
-  "name": "How Much Coffee?",
+  "name": "Coffee Calculator",
   "icons": [
-    {
-      "src": "/icons-152.png",
-      "type": "image/png",
-      "sizes": "152x152"
-    },
     {
       "src": "/icons-192.png",
       "type": "image/png",
@@ -18,7 +14,12 @@
       "sizes": "512x512"
     },
     {
-      "purpose": "maskable",
+      "src": "/icons-1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
+    },
+    {
+      "purpose": "any maskable",
       "src": "/icons-mask-256.png",
       "type": "image/png",
       "sizes": "256x256"
@@ -26,7 +27,12 @@
   ],
   "start_url": "/",
   "background_color": "#e7decd",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "theme_color": "#e7decd"
+  "screenshots": [
+    "src": "/screenshot-912x1280.png",
+    "type": "image/png",
+    "sizes": "912x1280"
+  ]
 }
