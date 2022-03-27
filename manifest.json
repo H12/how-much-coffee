@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "short_name": "Coffee",
+  "short_name": "Coffee Ratios",
   "name": "Coffee Calculator",
   "icons": [
     {
