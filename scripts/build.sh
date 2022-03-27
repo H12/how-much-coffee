@@ -29,6 +29,7 @@ echo '<!DOCTYPE HTML>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cartoon Coffee Beans">
+<meta name="google-site-verification" content="Pl0d84-udogeWHxzekskjOJIy0GhR5P5BxGHwVxoPjU" />
 </head>
 <body style="overscroll-behavior-y: none;">
 <div id="elm-app"></div>
