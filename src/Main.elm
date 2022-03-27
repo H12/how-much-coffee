@@ -172,6 +172,7 @@ pageLayout model =
             , Font.size 12
             , Font.family [ Font.monospace ]
             , centerX
+            , paddingXY 0 8
             , height <| fillPortion 1
             ]
             (text "Iconography courtesy of stockio.com")
