@@ -18,7 +18,7 @@ echo '<!DOCTYPE HTML>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Coffee Calculator">
 <meta charset="UTF-8">
-<meta name="description" content="Find the ideal coffee-to-water ratio for pour over or french press! Simply select brew type and specify your desired yield and strength.">
+<meta name="description" content="Find the ideal coffee-to-water ratio for pour over or french press! Simply select brew type, then specify your desired yield and strength. Coffee made simple!">
 <meta name="theme-color" content="#e7decd">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="Coffee Ratios - Simple Calculator | howmuch.coffee">
