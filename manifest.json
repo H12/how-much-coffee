@@ -31,8 +31,10 @@
   "scope": "/",
   "theme_color": "#e7decd",
   "screenshots": [
+    {
     "src": "/screenshot-912x1280.png",
     "type": "image/png",
     "sizes": "912x1280"
+    }
   ]
 }
