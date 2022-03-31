@@ -19,7 +19,7 @@
       "sizes": "1024x1024"
     },
     {
-      "purpose": "any maskable",
+      "purpose": "maskable",
       "src": "/icons-mask-256.png",
       "type": "image/png",
       "sizes": "256x256"
@@ -29,12 +29,5 @@
   "background_color": "#e7decd",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#e7decd",
-  "screenshots": [
-    {
-    "src": "/screenshot-912x1280.png",
-    "type": "image/png",
-    "sizes": "912x1280"
-    }
-  ]
+  "theme_color": "#e7decd"
 }
