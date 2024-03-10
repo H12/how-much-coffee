@@ -1,23 +1,25 @@
 # How Much Coffee?
 
-This is a simple application that provides you with the exact amount of coffee grounds you need in order to make the perfect cup 'o' joe.
+[![Package Version](https://img.shields.io/hexpm/v/how_much_coffee)](https://hex.pm/packages/how_much_coffee)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/how_much_coffee/)
 
-## Prerequisites
+```sh
+gleam add how_much_coffee
+```
+```gleam
+import how_much_coffee
 
-To run this application locally, you need to have Elm 0.19.0.
-
-## Local Development
-
-Once you're set up with Elm and have cloned this repository, you can run this application locally by running the following in the project root, and navigating to `Main.elm` in the reactor UI:
-
-```bash
-elm reactor
+pub fn main() {
+  // TODO: An example of the project in use
+}
 ```
 
-## Usage
+Further documentation can be found at <https://hexdocs.pm/how_much_coffee>.
 
-This project has continuous deployment using GitHub Actions and GitHub Pages. You can view the latest release at [howmuch.coffee](https://howmuch.coffee).
+## Development
 
-## Built With
-
-* [Elm](https://elm-lang.org/)
+```sh
+gleam run   # Run the project
+gleam test  # Run the tests
+gleam shell # Run an Erlang shell
+```
